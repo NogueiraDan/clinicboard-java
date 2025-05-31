@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  database:
+    image: postgres:latest
+    container_name: clinicboard_database
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: clinicboard
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - clinicboard
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '5050:80'
+    depends_on:
+      - database
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - clinicboard
+
+  rabbitmq:
+    image: "rabbitmq:3.8.6-management"
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - clinicboard
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+networks:
+  clinicboard:
+    external: true
