@@ -43,6 +43,10 @@ public class Appointment {
     @Column(name = "status", nullable = false)
     private AppointmentStatus status = AppointmentStatus.PENDING;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private AppointmentType type = AppointmentType.MARCACAO;
+
     @Column(name = "id_profissional", nullable = false)
     private String professionalId;
 
